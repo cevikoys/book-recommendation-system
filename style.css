@@ -1,0 +1,247 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('Background_Buku.jpg'); /* Menggunakan gambar rak buku yang diunggah */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+.header {
+    background-color: rgb(165, 128, 79);
+    text-align: center;
+    padding: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: white;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 300px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.search-container button:hover {
+    background-color: darkgray;
+}
+
+.book-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.book-item {
+    background-color: #333;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.book-item:hover {
+    transform: scale(1.05);
+}
+
+.book-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.book-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.book-item h3 {
+    font-size: 1em;
+    margin: 10px 0 5px;
+    color: #fff;
+}
+
+.book-item p {
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 0;
+}
+
+.book-item .year {
+    background-color: #ccc;
+    color: #333;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.book-item .rating {
+    margin-top: 5px;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    font-size: 1.2em;
+    margin: 0 2px;
+}
+
+.star.full {
+    color: #ffcc00; /* Warna kuning untuk bintang penuh */
+}
+
+.star.empty {
+    color: #ccc; /* Warna abu-abu untuk bintang kosong */
+}
+
+/* Opsional: Styling untuk half star jika diperlukan */
+.star.half {
+    color: #ffcc00;
+    position: relative;
+}
+.star.half:after {
+    content: "★";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #ccc;
+}
+.header {
+    background-color: rgb(165, 128, 79);
+    text-align: center;
+    padding: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: white;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 300px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.search-container button:hover {
+    background-color: darkgray;
+}
+
+.book-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.book-item {
+    background-color: #333;
+    border-radius: 5px;
+    width: 150px;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.book-item:hover {
+    transform: scale(1.05);
+}
+
+.book-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.book-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.book-item h3 {
+    font-size: 1em;
+    margin: 10px 0 5px;
+    color: #fff;
+}
+
+.book-item p {
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 0;
+}
+
+.book-item .year {
+    background-color: #ccc;
+    color: #333;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.book-item .rating {
+    margin-top: 5px;
+    font-size: 1em;
+}
+
+.star.full {
+    color: #ffcc00; /* Warna kuning untuk bintang penuh */
+}
+
+.star.empty {
+    color: #ccc; /* Warna abu-abu untuk bintang kosong */
+}

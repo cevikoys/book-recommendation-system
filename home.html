@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>BOOK RECOMMENDATION</h1>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search">
+        <button onclick="searchBooks()">Search</button>
+    </div>
+
+    <div class="book-list" id="bookList">
+        <!-- Books will be dynamically added here -->
+    </div>
+
+    <script>
+        // Fungsi untuk mengambil data buku dari Google Books API
+        async function fetchBooks(query) {
+            const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.items) {
+                    return data.items.map(item => ({
+                        title: item.volumeInfo.title || "Unknown Title",
+                        genre: item.volumeInfo.categories ? item.volumeInfo.categories.join(", ") : "Unknown Genre",
+                        description: item.volumeInfo.description || "No description available",
+                        date: item.volumeInfo.publishedDate || "Unknown Date",
+                        image: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : "https://via.placeholder.com/150x200.png?text=No+Image",
+                        rating: item.volumeInfo.averageRating || 0 // Ambil rating dari API, default 0 jika tidak ada
+                    }));
+                }
+                return [];
+            } catch (error) {
+                console.error("Error fetching books:", error);
+                return [];
+            }
+        }
+
+        // Fungsi untuk menghitung skor kesamaan (Content-based filtering sederhana)
+        function calculateSimilarity(query, book) {
+            query = query.toLowerCase();
+            const bookText = `${book.title} ${book.genre} ${book.description}`.toLowerCase();
+            const queryWords = query.split(/\s+/);
+            let score = 0;
+
+            // Hitung skor berdasarkan kecocokan kata
+            queryWords.forEach(word => {
+                if (bookText.includes(word)) {
+                    score += 1;
+                }
+            });
+
+            // Berikan bobot lebih tinggi jika ada di judul
+            if (book.title.toLowerCase().includes(query)) {
+                score += 2;
+            }
+
+            return score;
+        }
+
+        // Fungsi untuk menghasilkan bintang berdasarkan rating
+        function getStarRating(rating) {
+            const maxStars = 5;
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '';
+
+            for (let i = 0; i < maxStars; i++) {
+                if (i < fullStars) {
+                    stars += '<span class="star full">★</span>';
+                } else if (i === fullStars && hasHalfStar) {
+                    stars += '<span class="star half">★</span>'; // Half star (opsional, bisa diimplementasikan dengan CSS tambahan)
+                } else {
+                    stars += '<span class="star empty">☆</span>';
+                }
+            }
+            return stars;
+        }
+
+        // Fungsi untuk mencari dan menampilkan buku
+        async function searchBooks() {
+            const query = document.getElementById('searchInput').value;
+            if (!query) {
+                const bookList = document.getElementById('bookList');
+                bookList.innerHTML = '<p>Please enter a search term.</p>';
+                return;
+            }
+
+            // Ambil data buku dari Google Books API
+            const books = await fetchBooks(query);
+
+            // Hitung skor kesamaan untuk setiap buku
+            const scoredBooks = books.map(book => ({
+                book: book,
+                score: calculateSimilarity(query, book)
+            }));
+
+            // Urutkan berdasarkan skor (descending)
+            scoredBooks.sort((a, b) => b.score - a.score);
+
+            // Filter buku dengan skor > 0 (artinya ada kecocokan)
+            const recommendedBooks = scoredBooks.filter(item => item.score > 0).map(item => item.book);
+
+            // Tampilkan hasil
+            displayBooks(recommendedBooks);
+        }
+
+        // Fungsi untuk menampilkan buku di book-list
+        function displayBooks(booksToDisplay) {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = ''; // Bersihkan daftar sebelumnya
+
+            if (booksToDisplay.length === 0) {
+                bookList.innerHTML = '<p>No books found.</p>';
+                return;
+            }
+
+            booksToDisplay.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-item';
+                bookItem.innerHTML = `
+                    <a href="#">
+                        <img src="${book.image}" alt="${book.title}">
+                        <h3>${book.title}</h3>
+                        <p>${book.date}</p>
+                        <div class="rating">${getStarRating(book.rating)}</div>
+                    </a>
+                `;
+                bookList.appendChild(bookItem);
+            });
+        }
+    </script>
+</body>
+</html>
